@@ -20,16 +20,6 @@ Section 7 — Plotly Figure Builders
 Section 8 — Streamlit UI
 """
 
-import subprocess, sys
-
-# Ensure all dependencies are installed even if requirements.txt is not picked up
-for _pkg in ["numpy", "scipy", "plotly", "pandas"]:
-    try:
-        __import__(_pkg)
-    except ImportError:
-        subprocess.check_call([sys.executable, "-m", "pip", "install", _pkg,
-                               "--quiet", "--disable-pip-version-check"])
-
 import math
 from typing import Dict, List, Optional, Tuple, Any
 
@@ -623,9 +613,9 @@ def fig_true_map(vari: np.ndarray) -> go.Figure:
         z=vari.astype(float),
         colorscale="RdYlGn",
         zmin=-0.3, zmax=0.6,
-        colorbar=dict(title="VARI", thickness=12, len=0.7,
-                      tickfont=dict(color="#aaa"),
-                      titlefont=dict(color="#aaa")),
+        colorbar=dict(title=dict(text="VARI", font=dict(color="#aaa")),
+                      thickness=12, len=0.7,
+                      tickfont=dict(color="#aaa")),
         hovertemplate="VARI: %{z:.3f}<br>row=%{y}  col=%{x}<extra></extra>",
     ))
     fig.update_layout(
@@ -646,9 +636,9 @@ def fig_recon_map(vari: np.ndarray, mask: np.ndarray) -> go.Figure:
         z=display,
         colorscale="RdYlGn",
         zmin=-0.3, zmax=0.6,
-        colorbar=dict(title="VARI", thickness=12, len=0.7,
-                      tickfont=dict(color="#aaa"),
-                      titlefont=dict(color="#aaa")),
+        colorbar=dict(title=dict(text="VARI", font=dict(color="#aaa")),
+                      thickness=12, len=0.7,
+                      tickfont=dict(color="#aaa")),
         hovertemplate="VARI: %{z:.3f}<br>row=%{y}  col=%{x}<extra></extra>",
     ))
 
@@ -684,9 +674,9 @@ def fig_terrain(dem: np.ndarray, vari: np.ndarray,
         surfacecolor=vari_disp[::step, ::step],
         colorscale="RdYlGn",
         cmin=-0.3, cmax=0.6,
-        colorbar=dict(title="VARI", thickness=12,
-                      tickfont=dict(color="#aaa"),
-                      titlefont=dict(color="#aaa"))),
+        colorbar=dict(title=dict(text="VARI", font=dict(color="#aaa")),
+                      thickness=12,
+                      tickfont=dict(color="#aaa"))),
     )
     fig.update_layout(
         **_base_layout("🏔  3D Terrain — DEM + sampled VARI", height=480),
