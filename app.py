@@ -485,6 +485,61 @@ def compute_efficiency_score(coverage_fraction: float,
     return round((coverage_fraction * 100.0) / battery_used_pct, 3)
 
 
+
+
+def run_simulation(
+    altitude_m: float,
+    overlap_frac: float,
+    speed_ms: float,
+    interval_s: float,
+    battery_cap: float,
+    wind_factor: float,
+    slider_progress: float,
+) -> Dict:
+    """Execute the full simulation pipeline and return all results."""
+    field = generate_field_raster(42)
+
+    waypoints   = generate_lawnmower_path(altitude_m, overlap_frac)
+    seg_lengths = compute_segment_lengths(waypoints)
+    n_turns     = count_turns(waypoints)
+    fp_radius   = compute_footprint_radius_px(altitude_m)
+    gsd_cm      = compute_gsd_cm(altitude_m)
+    spacing_px  = compute_line_spacing_px(altitude_m, overlap_frac)
+    est_overlap = compute_estimated_overlap(fp_radius, spacing_px)
+    path_len_m  = total_path_length_m(waypoints)
+    full_dur_s  = mission_duration_s(waypoints, speed_ms)
+
+    all_captures = schedule_capture_events(waypoints, seg_lengths, speed_ms, interval_s)
+
+    batt        = compute_battery_budget(full_dur_s, n_turns, wind_factor, battery_cap)
+    frac_ok     = batt["fraction_possible"]
+
+    completed    = apply_battery_cutoff(all_captures, frac_ok)
+    slider_frac  = slider_progress * frac_ok
+    visible_caps = [ev for ev in completed if ev["progress"] <= slider_frac + 1e-6]
+    current_pos  = (interpolate_position(waypoints, seg_lengths, slider_frac)
+                    if waypoints else None)
+
+    cov_mask  = build_coverage_mask(visible_caps, fp_radius, overlap_frac)
+    cov_frac  = compute_coverage_fraction(cov_mask)
+
+    true_zonal   = compute_zonal_stats(field["vari"], field["zones"])
+    samp_zonal   = compute_zonal_stats(field["vari"], field["zones"], mask=cov_mask)
+    bias         = compute_sampling_bias(field["vari"], cov_mask)
+    batt_now_pct = round(min(batt["used_pct"], battery_cap) * slider_progress, 2)
+    eff_score    = compute_efficiency_score(cov_frac, max(batt_now_pct, 0.1))
+
+    return dict(
+        field=field, waypoints=waypoints, seg_lengths=seg_lengths,
+        all_captures=all_captures, visible_caps=visible_caps,
+        current_pos=current_pos, batt=batt, batt_now_pct=batt_now_pct,
+        cov_mask=cov_mask, cov_frac=cov_frac, est_overlap=est_overlap,
+        fp_radius=fp_radius, gsd_cm=gsd_cm, path_len_m=path_len_m,
+        full_dur_s=full_dur_s, slider_frac=slider_frac, n_turns=n_turns,
+        true_zonal=true_zonal, samp_zonal=samp_zonal, bias=bias,
+        eff_score=eff_score, spacing_px=spacing_px,
+    )
+
 # =============================================================================
 # SECTION 7 — PLOTLY FIGURE BUILDERS
 # =============================================================================
