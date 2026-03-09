@@ -20,6 +20,16 @@ Section 7 — Plotly Figure Builders
 Section 8 — Streamlit UI
 """
 
+import subprocess, sys
+
+# Ensure all dependencies are installed even if requirements.txt is not picked up
+for _pkg in ["numpy", "scipy", "plotly", "pandas"]:
+    try:
+        __import__(_pkg)
+    except ImportError:
+        subprocess.check_call([sys.executable, "-m", "pip", "install", _pkg,
+                               "--quiet", "--disable-pip-version-check"])
+
 import math
 from typing import Dict, List, Optional, Tuple, Any
 
