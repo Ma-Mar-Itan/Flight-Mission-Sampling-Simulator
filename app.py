@@ -547,19 +547,19 @@ def run_simulation(
 import plotly.graph_objects as go
 import pandas as pd
 
-_DARK_BG   = "#080c10"
-_PAPER_BG  = "#0d1117"
-_GRID_COL  = "#1c2128"
-_AXIS_COL  = "#484f58"
-_TEXT_COL  = "#e6edf3"
-_MUTED_COL = "#7d8590"
+_DARK_BG   = "#f8fafc"
+_PAPER_BG  = "#ffffff"
+_GRID_COL  = "#e2e8f0"
+_AXIS_COL  = "#94a3b8"
+_TEXT_COL  = "#0f172a"
+_MUTED_COL = "#64748b"
 
 _COLORBAR = dict(
     thickness=14,
     len=0.75,
     tickfont=dict(color=_MUTED_COL, size=10),
     title=dict(text="VARI", font=dict(color=_MUTED_COL, size=11)),
-    bgcolor="rgba(0,0,0,0)",
+    bgcolor="rgba(255,255,255,0)",
     borderwidth=0,
 )
 
@@ -660,7 +660,7 @@ def fig_mission_map(waypoints, all_captures, visible_caps, current_pos, vari, ba
         yaxis=dict(range=[128, 0], showgrid=False, zeroline=False,
                    color=_AXIS_COL, scaleanchor="x",
                    title=dict(text="row (px)", font=dict(size=10))),
-        legend=dict(bgcolor="rgba(13,17,23,0.80)", font=dict(size=10),
+        legend=dict(bgcolor="rgba(248,250,252,0.92)", font=dict(size=10),
                     bordercolor=_GRID_COL, borderwidth=1,
                     x=0.01, y=0.99, xanchor="left", yanchor="top"),
     )
@@ -699,7 +699,7 @@ def fig_recon_map(vari, mask):
         unobs = np.where(mask, float("nan"), 0.0)
         fig.add_trace(go.Heatmap(
             z=unobs,
-            colorscale=[[0, "rgba(4,6,10,0.92)"], [1, "rgba(4,6,10,0.92)"]],
+            colorscale=[[0, "rgba(220,228,240,0.88)"], [1, "rgba(220,228,240,0.88)"]],
             showscale=False,
             hovertemplate="Not observed<extra></extra>",
         ))
@@ -741,7 +741,7 @@ def fig_terrain(dem, vari, mask=None):
         height=500,
         margin=dict(l=0, r=0, t=48, b=0),
         scene=dict(
-            bgcolor=_DARK_BG,
+            bgcolor=_PAPER_BG,
             xaxis=dict(showgrid=False, zeroline=False, showticklabels=False,
                        backgroundcolor=_DARK_BG, gridcolor=_GRID_COL),
             yaxis=dict(showgrid=False, zeroline=False, showticklabels=False,
@@ -808,67 +808,67 @@ st.markdown("""
 @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600;700&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap');
 
 html, body, [data-testid="stAppViewContainer"] {
-    background-color: #080c10 !important;
+    background-color: #f8fafc !important;
     font-family: 'IBM Plex Sans', sans-serif;
 }
 [data-testid="stSidebar"] {
-    background-color: #0d1117 !important;
-    border-right: 1px solid #1c2128;
+    background-color: #ffffff !important;
+    border-right: 1px solid #e2e8f0;
 }
 [data-testid="stSidebar"] * { font-family: 'IBM Plex Sans', sans-serif; }
 
 /* Main content bg */
-section.main > div { background: #080c10; }
+section.main > div { background: #f8fafc; }
 
 /* Headings */
-h1, h2, h3 { font-family: 'IBM Plex Mono', monospace !important; color: #e6edf3 !important; }
+h1, h2, h3 { font-family: 'IBM Plex Mono', monospace !important; color: #0f172a !important; }
 
 /* Metrics */
 [data-testid="stMetric"] {
-    background: #0d1117;
-    border: 1px solid #1c2128;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
     border-radius: 6px;
     padding: 12px 16px !important;
-    transition: border-color .2s;
+    transition: border-color .2s, box-shadow .2s;
 }
-[data-testid="stMetric"]:hover { border-color: #30363d; }
+[data-testid="stMetric"]:hover { border-color: #cbd5e1; box-shadow: 0 2px 8px rgba(0,0,0,.06); }
 [data-testid="stMetricLabel"] {
-    color: #7d8590 !important;
+    color: #94a3b8 !important;
     font-size: 10px !important;
     font-family: 'IBM Plex Mono', monospace !important;
     text-transform: uppercase;
     letter-spacing: .08em;
 }
 [data-testid="stMetricValue"] {
-    color: #e6edf3 !important;
+    color: #0f172a !important;
     font-family: 'IBM Plex Mono', monospace !important;
     font-size: 22px !important;
 }
 
 /* Tabs */
-[data-testid="stTabs"] { border-bottom: 1px solid #1c2128; }
+[data-testid="stTabs"] { border-bottom: 1px solid #e2e8f0; }
 button[data-baseweb="tab"] {
     font-family: 'IBM Plex Mono', monospace !important;
     font-size: 11px !important;
     letter-spacing: .06em;
     text-transform: uppercase;
-    color: #7d8590 !important;
+    color: #94a3b8 !important;
     padding: 10px 18px !important;
 }
 button[data-baseweb="tab"][aria-selected="true"] {
-    color: #38bdf8 !important;
-    border-bottom: 2px solid #38bdf8 !important;
+    color: #0284c7 !important;
+    border-bottom: 2px solid #0284c7 !important;
 }
 
 /* Sliders */
 [data-testid="stSlider"] label {
     font-size: 11px !important;
     font-family: 'IBM Plex Mono', monospace !important;
-    color: #7d8590 !important;
+    color: #94a3b8 !important;
     text-transform: uppercase;
     letter-spacing: .06em;
 }
-.stSlider [data-baseweb="slider"] div[role="slider"] { background: #38bdf8 !important; }
+.stSlider [data-baseweb="slider"] div[role="slider"] { background: #0284c7 !important; }
 
 /* Run button */
 .stButton > button {
@@ -890,15 +890,15 @@ button[data-baseweb="tab"][aria-selected="true"] {
 
 /* Dataframe */
 [data-testid="stDataFrame"] {
-    border: 1px solid #1c2128 !important;
+    border: 1px solid #e2e8f0 !important;
     border-radius: 6px;
 }
 
 /* Divider */
-hr { border-color: #1c2128 !important; margin: 20px 0 !important; }
+hr { border-color: #e2e8f0 !important; margin: 20px 0 !important; }
 
 /* Caption text */
-[data-testid="stCaptionContainer"] { color: #484f58 !important; font-size: 11px !important; }
+[data-testid="stCaptionContainer"] { color: #94a3b8 !important; font-size: 11px !important; }
 
 /* Alerts / banners */
 .banner {
@@ -911,9 +911,9 @@ hr { border-color: #1c2128 !important; margin: 20px 0 !important; }
     margin-bottom: 16px;
     border-left: 3px solid;
 }
-.banner-ok   { background: rgba(34,197,94,.08);  border-color: #22c55e; color: #86efac; }
-.banner-warn { background: rgba(251,146,60,.08); border-color: #fb923c; color: #fdba74; }
-.banner-err  { background: rgba(239,68,68,.08);  border-color: #ef4444; color: #fca5a5; }
+.banner-ok   { background: rgba(34,197,94,.08);  border-color: #16a34a; color: #15803d; }
+.banner-warn { background: rgba(234,88,12,.08);  border-color: #ea580c; color: #c2410c; }
+.banner-err  { background: rgba(220,38,38,.08);  border-color: #dc2626; color: #b91c1c; }
 
 /* KPI section label */
 .section-label {
@@ -922,10 +922,10 @@ hr { border-color: #1c2128 !important; margin: 20px 0 !important; }
     font-weight: 700;
     letter-spacing: .16em;
     text-transform: uppercase;
-    color: #484f58;
+    color: #94a3b8;
     margin-bottom: 10px;
     padding-bottom: 6px;
-    border-bottom: 1px solid #1c2128;
+    border-bottom: 1px solid #e2e8f0;
 }
 
 /* Score badge */
@@ -951,7 +951,7 @@ if "ran_once" not in st.session_state:
 with st.sidebar:
     st.markdown(
         '<div style="font-family:IBM Plex Mono,monospace;font-size:18px;'
-        'font-weight:700;color:#e6edf3;margin-bottom:4px;">🛰 MISSION SIM</div>'
+        'font-weight:700;color:#0f172a;margin-bottom:4px;">🛰 MISSION SIM</div>'
         '<div style="font-family:IBM Plex Mono,monospace;font-size:9px;'
         'color:#484f58;letter-spacing:.12em;margin-bottom:20px;">'
         'DRONE · AGRICULTURE · 4 ACRES</div>',
