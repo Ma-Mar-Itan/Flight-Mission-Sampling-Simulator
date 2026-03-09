@@ -146,8 +146,8 @@ The long-term goal is a closed-loop system in which drone survey parameters are 
 
 ## Author
 
-Developed as part of ongoing undergraduate / postgraduate research into autonomous precision agriculture systems.
+Developed within a broader research and venture initiative in autonomous systems for precision agriculture.
 
 ---
 
-*Supervisor enquiries and collaboration proposals welcome.*
+*Enquiries and collaboration proposals welcome.*
